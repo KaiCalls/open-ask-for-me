@@ -1,0 +1,10 @@
+# open-ask-for-me
+
+> Open-source agent that phones local businesses for you and brings back the answers. Give it a question and a list of businesses; it calls each one with the same question through CallMCP and returns a markdown comparison table, per-call summaries, and a JSON file. An open-source alternative to Google's "Ask for Me" / "Let Google Call". Not affiliated with Google.
+
+- CLI: `node bin/ask.mjs "<question>" --businesses shops.csv [--live] [--max-calls 3]`. Node 18+, no dependencies. Dry run unless `--live`.
+- Agent skill: `skills/ask-for-me/SKILL.md` (Claude Code, Codex).
+- Calling engine: CallMCP hosted MCP server, `https://callmcp.ai/mcp`, auth `Authorization: Bearer kc_live_...`. Tools used: `make_call`, `check_call_status`, `get_transcript`.
+- Guardrails: no WA or CA businesses (state and area code), US/Canada business numbers only, never the same number twice (`~/.open-ask-for-me/called.json`), typed `CALL` confirmation before dialing.
+- Get a key: https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me
+- License: MIT
