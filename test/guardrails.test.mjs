@@ -64,7 +64,7 @@ test('refuses a number already in the ledger', () => {
   assert.match(r.reason, /never call a number twice/);
 });
 
-import { buildContext } from '../lib/callmcp.mjs';
+import { buildContext } from '../lib/kaicalls.mjs';
 test('facts are passed into the call context and hold is discouraged', () => {
   const c = buildContext('price?', 'Shop', 'tires are new');
   assert.match(c, /tires are new/);

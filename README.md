@@ -21,10 +21,10 @@ Zero dependencies. Node 18+. Works as a CLI, or as a skill for Claude Code and C
 
 ## Quick start
 
-1. **Get a CallMCP key.** Sign up at [callmcp.ai](https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me). A new account's first call to a US or Canada business line is free.
+1. **Get a KaiCalls key.** Sign up at [kaicalls.com](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me). A new account's first call to a US or Canada business line is free.
 2. **Set the key.**
    ```bash
-   export CALLMCP_API_KEY=kc_live_...
+   export KAICALLS_API_KEY=kc_live_...
    ```
 3. **Run it.** Without `--live` it is a dry run and dials nothing.
    ```bash
@@ -56,16 +56,16 @@ Then copy `skills/ask-for-me/` into your project's `.claude/skills/` and ask:
 
 > Get me 3 quotes for a tire change near 07924.
 
-The skill tells the agent to search for shops, show you the list, wait for your OK, call through CallMCP, and return the table.
+The skill tells the agent to search for shops, show you the list, wait for your OK, call through KaiCalls, and return the table.
 
 ### Codex and other MCP clients
 
-Add CallMCP as a Streamable HTTP MCP server:
+Add KaiCalls as a Streamable HTTP MCP server:
 
 ```json
 {
-  "callmcp": {
-    "url": "https://callmcp.ai/mcp",
+  "kaicalls": {
+    "url": "https://www.kaicalls.com/api/mcp",
     "headers": { "Authorization": "Bearer kc_live_YOUR_KEY" }
   }
 }
@@ -95,7 +95,7 @@ node bin/ask.mjs "Do you have size 225/45R17 in stock?" \
 | `--live` | off | Place real calls. Without it, nothing is dialed. |
 | `--max-calls <n>` | 3 | Most calls in one run. |
 | `--out <file>` | `ask-results-<time>.json` | Results file with every call, summary, and transcript. |
-| `--agent-id <id>` | account default | Which CallMCP agent places the calls. |
+| `--agent-id <id>` | account default | Which KaiCalls agent places the calls. |
 | `--facts "<text>"` | none | Details the caller may share if the shop asks, such as "tires are new, size 215/55R16". Shops ask follow-up questions, so this gets you real answers. |
 | `--poll-interval <sec>` | 10 | Seconds between status checks. |
 | `--timeout <sec>` | 600 | Stop waiting after this long. |
@@ -115,7 +115,7 @@ question + businesses
   ledger: record number  (~/.open-ask-for-me/called.json)
         |
         v
-  CallMCP  tools/call make_call  -->  Kai phones the business
+  KaiCalls  tools/call make_call  -->  Kai phones the business
         |
         v
   tools/call check_call_status  (poll until the call ends)
@@ -127,7 +127,7 @@ question + businesses
   markdown table + per-call summaries + results JSON
 ```
 
-The client speaks MCP (JSON-RPC over Streamable HTTP) to `https://callmcp.ai/mcp`. All argument names for CallMCP live in one file, [`lib/callmcp.mjs`](lib/callmcp.mjs).
+The client speaks MCP (JSON-RPC over Streamable HTTP) to `https://www.kaicalls.com/api/mcp`. All argument names for KaiCalls live in one file, [`lib/kaicalls.mjs`](lib/kaicalls.mjs).
 
 ## Guardrails
 
@@ -141,11 +141,11 @@ These are enforced in code and covered by tests in [`test/`](test).
 - **Honest calls.** Kai says it is an assistant calling on behalf of a customer. The task tells it not to book, buy, or agree to anything, and not to share your personal details.
 - **Retry-safe.** Each call carries an idempotency key, so a retried request does not place a second call.
 
-CallMCP adds its own rules on the server side, such as calling hours and not placing AI calls to personal cell phones. See [callmcp.ai/safety](https://callmcp.ai/safety?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me).
+KaiCalls adds its own rules on the server side, such as calling hours and not placing AI calls to personal cell phones.
 
-## Powered by CallMCP
+## Powered by KaiCalls
 
-[CallMCP](https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me) is a hosted MCP server that lets an AI agent place and receive phone calls. It runs on the KaiCalls telephony stack. This repo uses three of its tools: `make_call`, `check_call_status`, and `get_transcript`.
+[KaiCalls](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me) gives your AI agent a phone. Its hosted MCP server lets an agent place and receive phone calls. This repo uses three of its tools: `make_call`, `check_call_status`, and `get_transcript`.
 
 A new account's first call to a US or Canada business line is free. After that, calls run on a plan: see [pricing](https://www.kaicalls.com/pricing?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me).
 

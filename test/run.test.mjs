@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { startFakeMcp } from './fake-mcp-server.mjs';
 import { run, planCalls } from '../lib/run.mjs';
 import { Ledger } from '../lib/ledger.mjs';
-import { CallMcpClient, makeCallArgs } from '../lib/callmcp.mjs';
+import { KaiCallsClient, makeCallArgs } from '../lib/kaicalls.mjs';
 import { renderTable, extractPrice } from '../lib/report.mjs';
 
 const Q = 'How much is a tire change for a 2019 Honda Civic, and can you do it this week?';
@@ -57,7 +57,7 @@ test('--max-calls caps the plan and duplicates in the list are dropped', () => {
 test('live run without confirmation places no calls', async () => {
   const fake = await startFakeMcp();
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_test', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_test', endpoint: fake.url });
     const ledger = freshLedger();
     const out = await run({ question: Q, businesses: SHOPS, ledger, live: true, client, confirm: async () => false, ...fast });
     assert.equal(out.aborted, true);
@@ -69,7 +69,7 @@ test('live run without confirmation places no calls', async () => {
 test('live run calls, polls, and returns answers with prices', async () => {
   const fake = await startFakeMcp({ answers: ANSWERS, pollsUntilDone: 2 });
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_test', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_test', endpoint: fake.url });
     const ledger = freshLedger();
     const out = await run({ question: Q, businesses: SHOPS, ledger, live: true, client, confirm: yes, ...fast });
     assert.equal(fake.state.makeCalls.length, 3);
@@ -94,7 +94,7 @@ test('live run calls, polls, and returns answers with prices', async () => {
 test('a second run never calls the same numbers again', async () => {
   const fake = await startFakeMcp({ answers: ANSWERS });
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_test', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_test', endpoint: fake.url });
     const ledger = freshLedger();
     await run({ question: Q, businesses: SHOPS, ledger, live: true, client, confirm: yes, ...fast });
     assert.equal(fake.state.makeCalls.length, 3);
@@ -107,7 +107,7 @@ test('a second run never calls the same numbers again', async () => {
 test('WA and CA businesses are skipped in a live run and never reach the server', async () => {
   const fake = await startFakeMcp({ answers: ANSWERS });
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_test', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_test', endpoint: fake.url });
     const list = [
       { name: 'Seattle Tire', phone: '+12065550100', state: 'WA' },
       { name: 'LA Tire', phone: '+13105550100', state: 'NJ' },
@@ -122,7 +122,7 @@ test('WA and CA businesses are skipped in a live run and never reach the server'
 test('a tool error is reported and the number still counts as called', async () => {
   const fake = await startFakeMcp({ failNumbers: ['+19085550101'] });
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_test', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_test', endpoint: fake.url });
     const ledger = freshLedger();
     const out = await run({ question: Q, businesses: [SHOPS[0]], ledger, live: true, client, confirm: yes, ...fast });
     assert.equal(out.results[0].status, 'error');
@@ -134,7 +134,7 @@ test('a tool error is reported and the number still counts as called', async () 
 test('works when the server answers with text/event-stream', async () => {
   const fake = await startFakeMcp({ answers: ANSWERS, sse: true });
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_test', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_test', endpoint: fake.url });
     const out = await run({ question: Q, businesses: [SHOPS[1]], ledger: freshLedger(), live: true, client, confirm: yes, ...fast });
     assert.equal(out.results[0].price, '$89.99');
   } finally { await fake.close(); }
@@ -143,7 +143,7 @@ test('works when the server answers with text/event-stream', async () => {
 test('a wrong API key fails before any call is placed', async () => {
   const fake = await startFakeMcp();
   try {
-    const client = new CallMcpClient({ apiKey: 'kc_live_wrong', endpoint: fake.url });
+    const client = new KaiCallsClient({ apiKey: 'kc_live_wrong', endpoint: fake.url });
     const ledger = freshLedger();
     const out = await run({ question: Q, businesses: [SHOPS[0]], ledger, live: true, client, confirm: yes, ...fast });
     assert.equal(out.results[0].status, 'error');

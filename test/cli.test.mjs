@@ -40,14 +40,14 @@ test('CLI dry run prints a table, writes results, and keeps the ledger empty', a
 test('CLI --live without a key stops with the signup link', async () => {
   const r = await runCli(['q', ...BIZ, '--live']);
   assert.equal(r.code, 2);
-  assert.match(r.stderr, /CALLMCP_API_KEY/);
+  assert.match(r.stderr, /KAICALLS_API_KEY/);
   assert.match(r.stderr, /utm_content=open-ask-for-me/);
 });
 
 test('CLI --live does not dial unless the user types CALL', async () => {
   const fake = await startFakeMcp();
   try {
-    const r = await runCli(['q', ...BIZ, '--live', '--endpoint', fake.url], { env: { CALLMCP_API_KEY: 'kc_live_test' }, input: 'yes\n' });
+    const r = await runCli(['q', ...BIZ, '--live', '--endpoint', fake.url], { env: { KAICALLS_API_KEY: 'kc_live_test' }, input: 'yes\n' });
     assert.equal(r.code, 1);
     assert.equal(fake.state.makeCalls.length, 0);
     assert.match(r.stdout, /not confirmed/);
@@ -57,7 +57,7 @@ test('CLI --live does not dial unless the user types CALL', async () => {
 test('CLI --live dials after CALL and prints answers', async () => {
   const fake = await startFakeMcp({ answers: { '+19085550101': 'Mount and balance is $25 per tire.' } });
   try {
-    const r = await runCli(['q', ...BIZ, '--live', '--endpoint', fake.url, '--poll-interval', '0.01'], { env: { CALLMCP_API_KEY: 'kc_live_test' }, input: 'CALL\n' });
+    const r = await runCli(['q', ...BIZ, '--live', '--endpoint', fake.url, '--poll-interval', '0.01'], { env: { KAICALLS_API_KEY: 'kc_live_test' }, input: 'CALL\n' });
     assert.equal(r.code, 0, r.stderr);
     assert.deepEqual(fake.state.makeCalls.map((a) => a.to), ['+19085550101']);
     assert.match(r.stdout, /\| Bernardsville Tire \| \+19085550101 \| Mount and balance is \$25 per tire\. \| \$25 \| completed \|/);

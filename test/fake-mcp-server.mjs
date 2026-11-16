@@ -1,4 +1,4 @@
-// A local stand-in for CallMCP. It speaks JSON-RPC over HTTP on localhost,
+// A local stand-in for KaiCalls. It speaks JSON-RPC over HTTP on localhost,
 // answers make_call / check_call_status / get_transcript with the same shapes as the
 // live server, and never touches a phone network.
 import { createServer } from 'node:http';
@@ -23,7 +23,7 @@ export async function startFakeMcp({ apiKey = 'kc_live_test', answers = {}, fail
       let result;
       if (msg.method === 'initialize') {
         res.setHeader('mcp-session-id', 'fake-session-1');
-        result = { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'fake-callmcp', version: '0' } };
+        result = { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'fake-kaicalls', version: '0' } };
       } else if (msg.method === 'tools/call') {
         result = handleTool(msg.params.name, msg.params.arguments || {});
       } else {

@@ -1,10 +1,10 @@
 {
   "name": "open-ask-for-me",
   "version": "0.1.0",
-  "description": "Your agent finds local businesses, calls them through CallMCP, asks the same question, and brings back a comparison table.",
+  "description": "Your agent finds local businesses, calls them through KaiCalls, asks the same question, and brings back a comparison table.",
   "author": { "name": "KaiCalls", "url": "https://www.kaicalls.com" },
   "homepage": "https://github.com/KaiCalls/open-ask-for-me",
   "repository": "https://github.com/KaiCalls/open-ask-for-me",
   "license": "MIT",
-  "keywords": ["phone-calls", "local-business", "quotes", "callmcp", "kaicalls"]
+  "keywords": ["phone-calls", "local-business", "quotes", "kaicalls"]
 }

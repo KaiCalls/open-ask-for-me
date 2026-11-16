@@ -1,17 +1,17 @@
 ---
 name: ask-for-me
-description: Phone local businesses for the user and bring back their answers as a comparison table. Use when the user asks you to call shops, get quotes, check prices, stock, or availability at nearby businesses (for example "get me 3 quotes for a tire change near 07924"). Places real calls through CallMCP (KaiCalls), so it always confirms the list with the user first.
+description: Phone local businesses for the user and bring back their answers as a comparison table. Use when the user asks you to call shops, get quotes, check prices, stock, or availability at nearby businesses (for example "get me 3 quotes for a tire change near 07924"). Places real calls through KaiCalls (KaiCalls), so it always confirms the list with the user first.
 ---
 
 # Ask for me
 
-You find local businesses, confirm the list with the user, call each one with the same question through CallMCP, and return a comparison table.
+You find local businesses, confirm the list with the user, call each one with the same question through KaiCalls, and return a comparison table.
 
 Every call rings a real business. Follow the steps in order. Do not skip the confirmation.
 
-## 1. Connect CallMCP (once)
+## 1. Connect KaiCalls (once)
 
-Check whether the KaiCalls / CallMCP tools are available (`make_call`, `check_call_status`, `get_transcript`). If not, tell the user how to add them and stop until they do:
+Check whether the KaiCalls tools are available (`make_call`, `check_call_status`, `get_transcript`). If not, tell the user how to add them and stop until they do:
 
 - Claude Code plugin:
   ```bash
@@ -19,8 +19,8 @@ Check whether the KaiCalls / CallMCP tools are available (`make_call`, `check_ca
   claude plugin install kaicalls@kaicalls
   ```
   Then run `/kaicalls:connect` in a new session.
-- Any MCP client: add a Streamable HTTP server at `https://callmcp.ai/mcp` with the header `Authorization: Bearer kc_live_...`, or sign in with OAuth.
-- No key yet: https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me
+- Any MCP client: add a Streamable HTTP server at `https://www.kaicalls.com/api/mcp` with the header `Authorization: Bearer kc_live_...`, or sign in with OAuth.
+- No key yet: https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me
 
 A new account's first call to a US or Canada business line is free. After that, calls need a plan (https://www.kaicalls.com/pricing). Do not quote prices.
 
@@ -77,5 +77,5 @@ The same flow runs from a terminal with the open-source CLI in this repo:
 
 ```bash
 node bin/ask.mjs "<question>" --businesses shops.csv          # dry run
-CALLMCP_API_KEY=kc_live_... node bin/ask.mjs "<question>" --businesses shops.csv --live
+KAICALLS_API_KEY=kc_live_... node bin/ask.mjs "<question>" --businesses shops.csv --live
 ```

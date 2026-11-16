@@ -22,7 +22,7 @@ These facts come from the sources linked below.
 | What it asks | Google's question flow for supported categories | Any question you write |
 | Where results go | Text or email summary | Markdown table, per-call summaries, and a JSON file |
 | Source code | Closed | Open, MIT |
-| Who places the call | Google | Kai, through CallMCP |
+| Who places the call | Google | Kai, through KaiCalls |
 | Cost | Free inside Google Search | A new account's first call to a US or Canada business line is free, then a plan |
 | Availability | US | Calls to US and Canada business lines, excluding WA and CA in this repo |
 
@@ -39,4 +39,4 @@ git clone https://github.com/KaiCalls/open-ask-for-me && cd open-ask-for-me
 node bin/ask.mjs "How much is a tire change?" --businesses examples/businesses.csv
 ```
 
-That is a dry run. To place real calls, [get a CallMCP key](https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me), set `CALLMCP_API_KEY`, and add `--live`.
+That is a dry run. To place real calls, [get a KaiCalls key](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me), set `KAICALLS_API_KEY`, and add `--live`.

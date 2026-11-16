@@ -1,7 +1,7 @@
 {
   "name": "open-ask-for-me",
   "version": "0.1.0",
-  "description": "Your agent calls local businesses and brings back the answers. Open-source, zero dependencies, powered by CallMCP.",
+  "description": "Your agent calls local businesses and brings back the answers. Open-source, zero dependencies, powered by KaiCalls.",
   "type": "module",
   "bin": {
     "open-ask-for-me": "bin/ask.mjs"
@@ -13,7 +13,7 @@
   "engines": {
     "node": ">=18"
   },
-  "keywords": ["ai-agent", "phone-calls", "mcp", "callmcp", "kaicalls", "claude-code", "codex", "local-business", "quotes"],
+  "keywords": ["ai-agent", "phone-calls", "mcp", "kaicalls", "claude-code", "codex", "local-business", "quotes"],
   "homepage": "https://github.com/KaiCalls/open-ask-for-me",
   "repository": {
     "type": "git",

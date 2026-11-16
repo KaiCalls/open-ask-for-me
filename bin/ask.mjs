@@ -5,7 +5,7 @@ import { writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { loadBusinessFile } from '../lib/businesses.mjs';
 import { Ledger, defaultLedgerPath } from '../lib/ledger.mjs';
-import { CallMcpClient, DEFAULT_ENDPOINT } from '../lib/callmcp.mjs';
+import { KaiCallsClient, DEFAULT_ENDPOINT } from '../lib/kaicalls.mjs';
 import { run } from '../lib/run.mjs';
 import { parseArgs } from '../lib/args.mjs';
 import { renderTable, renderTranscriptSummaries } from '../lib/report.mjs';
@@ -18,7 +18,7 @@ Options:
   --live                 Place real calls. Without it, nothing is dialed (dry run).
   --max-calls <n>        Most calls to place in one run (default 3).
   --out <file>           Where to write results JSON (default ./ask-results-<time>.json).
-  --agent-id <id>        CallMCP agent to use (optional; default is the account's one agent).
+  --agent-id <id>        KaiCalls agent to use (optional; default is the account's one agent).
   --facts "<text>"       Details Kai may share if the shop asks (e.g. "tires are new, 215/55R16").
   --poll-interval <sec>  Seconds between status checks (default 10).
   --timeout <sec>        Stop waiting after this many seconds (default 600).
@@ -26,7 +26,7 @@ Options:
   -h, --help             Show this help.
 
 Environment:
-  CALLMCP_API_KEY        Your CallMCP key (kc_live_...). Needed only with --live.
+  KAICALLS_API_KEY        Your KaiCalls key (kc_live_...). Needed only with --live.
 
 Guardrails: no WA or CA businesses, US/Canada numbers only, a number is never called twice
 (ledger: ${defaultLedgerPath()}), and --live asks you to type CALL before dialing.`;
@@ -66,12 +66,12 @@ async function main() {
   const ledger = new Ledger();
   let client;
   if (opts.live) {
-    const apiKey = process.env.CALLMCP_API_KEY;
+    const apiKey = process.env.KAICALLS_API_KEY;
     if (!apiKey) {
-      process.stderr.write('ask: --live needs CALLMCP_API_KEY. Get a key at https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me\n');
+      process.stderr.write('ask: --live needs KAICALLS_API_KEY. Get a key at https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me\n');
       process.exit(2);
     }
-    client = new CallMcpClient({ apiKey, endpoint: opts.endpoint || process.env.CALLMCP_ENDPOINT || DEFAULT_ENDPOINT });
+    client = new KaiCallsClient({ apiKey, endpoint: opts.endpoint || process.env.KAICALLS_MCP_ENDPOINT || DEFAULT_ENDPOINT });
   } else {
     process.stderr.write('Dry run: nothing will be dialed. Add --live to place real calls.\n');
   }
