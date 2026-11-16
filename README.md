@@ -21,7 +21,7 @@ Zero dependencies. Node 18+. Works as a CLI, or as a skill for Claude Code and C
 
 ## Quick start
 
-1. **Get a CallMCP key.** Sign up at [callmcp.ai](https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me). The first call for a new connector account is free.
+1. **Get a CallMCP key.** Sign up at [callmcp.ai](https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me). A new account's first call to a US or Canada business line is free.
 2. **Set the key.**
    ```bash
    export CALLMCP_API_KEY=kc_live_...
@@ -147,7 +147,7 @@ CallMCP adds its own rules on the server side, such as calling hours and not pla
 
 [CallMCP](https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me) is a hosted MCP server that lets an AI agent place and receive phone calls. It runs on the KaiCalls telephony stack. This repo uses three of its tools: `make_call`, `check_call_status`, and `get_transcript`.
 
-The first call for a new connector account is free. After that, calls run on a plan: see [pricing](https://www.kaicalls.com/pricing?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me).
+A new account's first call to a US or Canada business line is free. After that, calls run on a plan: see [pricing](https://www.kaicalls.com/pricing?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me).
 
 ## Tests
 

@@ -22,7 +22,7 @@ Check whether the KaiCalls / CallMCP tools are available (`make_call`, `check_ca
 - Any MCP client: add a Streamable HTTP server at `https://callmcp.ai/mcp` with the header `Authorization: Bearer kc_live_...`, or sign in with OAuth.
 - No key yet: https://callmcp.ai/?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me
 
-The first call for a new connector account is free. After that, calls need a plan (https://www.kaicalls.com/pricing). Do not quote prices.
+A new account's first call to a US or Canada business line is free. After that, calls need a plan (https://www.kaicalls.com/pricing). Do not quote prices.
 
 ## 2. Pin down the question
 

@@ -23,7 +23,7 @@ These facts come from the sources linked below.
 | Where results go | Text or email summary | Markdown table, per-call summaries, and a JSON file |
 | Source code | Closed | Open, MIT |
 | Who places the call | Google | Kai, through CallMCP |
-| Cost | Free inside Google Search | First call for a new CallMCP connector account is free, then a CallMCP plan |
+| Cost | Free inside Google Search | A new account's first call to a US or Canada business line is free, then a plan |
 | Availability | US | Calls to US and Canada business lines, excluding WA and CA in this repo |
 
 ## When to use which
