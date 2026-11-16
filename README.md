@@ -1,47 +1,74 @@
-# open-ask-for-me
+<h1 align="center">Stop calling around.</h1>
 
-**The open-source alternative to Google's "Ask for Me" and "Let Google Call": your agent calls local businesses and brings back the answers.**
+<p align="center"><b>open-ask-for-me</b> is the open-source "Ask for Me."<br>
+Type one question. Your agent phones the shops, gets through the phone menus,<br>
+asks every one the same thing, and hands you back a price table.</p>
 
-Ask one question. It calls a few shops, asks each the same thing, and gives you a comparison table plus a short summary of every call.
+<p align="center">
+<img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue">
+<img alt="Node 18+" src="https://img.shields.io/badge/node-18%2B-green">
+<img alt="Zero dependencies" src="https://img.shields.io/badge/dependencies-0-brightgreen">
+<img alt="Works with Claude Code and Codex" src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex-orange">
+<a href="https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me"><img alt="Powered by KaiCalls" src="https://img.shields.io/badge/calls%20by-KaiCalls-black"></a>
+</p>
 
-```text
-$ node bin/ask.mjs "How much to mount and balance 4 tires on a 2019 Civic? Any openings this week?" \
-    --businesses shops.csv --live
+---
 
-| Business            | Phone        | Answer                                         | Price  | Status    |
-| ------------------- | ------------ | ---------------------------------------------- | ------ | --------- |
-| Example Tire Shop A | +19085550101 | $25 per tire to mount and balance. Open Thu.   | $25    | completed |
-| Example Tire Shop B | +19085550102 | $89.99 for all four. Walk-ins Saturday.        | $89.99 | completed |
-| Example Auto C      | +19735550103 | Won't quote by phone. Asked us to come in.     |        | completed |
+**You:** "Get me 3 quotes to mount and balance 4 tires on a 2019 Civic. Any openings this week?"
+
+**Your agent, a few minutes later:**
+
+| Business            | Answer                                       | Price  |
+| ------------------- | -------------------------------------------- | ------ |
+| Example Tire Shop A | $25 per tire to mount and balance. Open Thu. | $25/tire |
+| Example Tire Shop B | $89.99 for all four. Walk-ins Saturday.      | $89.99 |
+| Example Auto C      | Won't quote by phone. Asked us to come in.   | —      |
+
+<sub>Sample output. Every call also comes back with a summary and the full transcript.</sub>
+
+No hold music. No "press 2 for service." No repeating the same question to three different people. You read one table and pick.
+
+## Things to ask it
+
+- "Who has 225/45R17 tires in stock today?"
+- "What does a standard dental cleaning cost without insurance?"
+- "Can the vet see a limping dog this afternoon?"
+- "How much to rekey the locks on a 3-bedroom house?"
+- "How long is the wait for a table for 6 tonight?"
+
+If the answer lives in someone's head at a local business, your agent can go get it.
+
+## Try it in 30 seconds
+
+No key and no calls needed for the dry run:
+
+```bash
+git clone https://github.com/KaiCalls/open-ask-for-me && cd open-ask-for-me
+node bin/ask.mjs "How much is a tire change?" --businesses examples/businesses.csv
 ```
 
-(Example output with sample numbers.)
+Ready for real calls:
 
-Zero dependencies. Node 18+. Works as a CLI, or as a skill for Claude Code and Codex.
+1. **Get a KaiCalls key** at [kaicalls.com](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me). A new account's first call to a US or Canada business line is free.
+2. `export KAICALLS_API_KEY=kc_live_...`
+3. Add `--live`. It shows you every call it is about to place and waits for you to type `CALL`.
 
-## Quick start
+```bash
+node bin/ask.mjs "How much is a tire change?" --businesses shops.csv --live --facts "tires are new, 215/55R16"
+```
 
-1. **Get a KaiCalls key.** Sign up at [kaicalls.com](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me). A new account's first call to a US or Canada business line is free.
-2. **Set the key.**
-   ```bash
-   export KAICALLS_API_KEY=kc_live_...
-   ```
-3. **Run it.** Without `--live` it is a dry run and dials nothing.
-   ```bash
-   git clone https://github.com/KaiCalls/open-ask-for-me && cd open-ask-for-me
-   node bin/ask.mjs "How much is a tire change?" --businesses examples/businesses.csv   # dry run
-   node bin/ask.mjs "How much is a tire change?" --businesses shops.csv --live          # real calls
-   ```
+`--facts` gives the caller the details shops always ask about, so you get a real number back.
 
-`--live` lists the calls it is about to place and waits for you to type `CALL`.
+## Why not just use Google's?
 
-## Looking for…?
+Google's "Ask for Me" and "Let Google Call" do this inside Google Search. They're good. This is the version you control.
 
-| You searched for | What it is | Where this fits |
+| | Google | open-ask-for-me |
 | --- | --- | --- |
-| Google "Ask for Me" / "Let Google Call" | A Google Search feature (US) where Google's AI calls local businesses for you and sends a summary of prices and availability. | Same idea, open source, and you choose the businesses, the question, and where the results go. |
-| Bland Agent Phone | A Bland plan that gives an AI agent its own US phone number for calls and texts. | open-ask-for-me is a ready-made "call these shops and compare" job, not a phone number plan. |
-| AgentPhone | A telephony API that gives AI agents phone numbers for voice and SMS. | Same: this repo is the finished errand, with guardrails, on top of a calling API. |
+| Which businesses | Google's picks, in the categories Google supports | Any US or Canada business line you choose (except WA and CA) |
+| What it asks | Google's form | Your exact question, in your words |
+| Where answers go | A text or email from Google | A table, a JSON file, or straight back into your agent |
+| Source | Closed | MIT, read every line |
 
 ## Use it from your agent
 
@@ -129,25 +156,34 @@ question + businesses
 
 The client speaks MCP (JSON-RPC over Streamable HTTP) to `https://www.kaicalls.com/api/mcp`. All argument names for KaiCalls live in one file, [`lib/kaicalls.mjs`](lib/kaicalls.mjs).
 
-## Guardrails
+## Built to be polite
 
-These are enforced in code and covered by tests in [`test/`](test).
+Every rule below is enforced in code and covered by tests in [`test/`](test).
 
-- **No calls to Washington or California businesses.** Checked by the state you give and by area code, so a WA or CA number is refused even if the state field says otherwise.
-- **US and Canada business numbers only.** Other countries, other +1 countries, and 900 numbers are refused.
-- **Never the same number twice.** Every dialed number is written to `~/.open-ask-for-me/called.json` before the call starts. A number in that file is skipped on every later run.
-- **Dry run by default.** Real calls need `--live` and you typing `CALL` at the prompt.
-- **At most 3 calls per run** unless you raise `--max-calls`.
-- **Honest calls.** Kai says it is an assistant calling on behalf of a customer. The task tells it not to book, buy, or agree to anything, and not to share your personal details.
-- **Retry-safe.** Each call carries an idempotency key, so a retried request does not place a second call.
+- **It never calls the same number twice.** Every number is logged to `~/.open-ask-for-me/called.json` before dialing.
+- **Dry run by default.** Real calls need `--live` plus you typing `CALL`.
+- **Small batches.** 3 calls per run unless you raise `--max-calls`.
+- **It says who it is.** Kai introduces itself as an assistant calling for a customer. It never books, buys, agrees to anything, or shares your details.
+- **Business lines only, US and Canada.** No other countries, no 900 numbers, and no Washington or California businesses (checked by state and by area code).
+- **Retry-safe.** Each call carries an idempotency key, so a retry never dials twice.
 
-KaiCalls adds its own rules on the server side, such as calling hours and not placing AI calls to personal cell phones.
+KaiCalls adds its own server-side rules on top, like calling hours and no AI calls to personal cell phones.
+
+## Looking for…?
+
+| You searched for | What it is | Where this fits |
+| --- | --- | --- |
+| Google "Ask for Me" / "Let Google Call" | A Google Search feature (US) where Google's AI calls local businesses for you and sends a summary of prices and availability. | Same idea, open source, and you choose the businesses, the question, and where the results go. |
+| Bland Agent Phone | A Bland plan that gives an AI agent its own US phone number for calls and texts. | open-ask-for-me is a ready-made "call these shops and compare" job, not a phone number plan. |
+| AgentPhone | A telephony API that gives AI agents phone numbers for voice and SMS. | Same: this repo is the finished errand, with guardrails, on top of a calling API. |
 
 ## Powered by KaiCalls
 
-[KaiCalls](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me) gives your AI agent a phone. Its hosted MCP server lets an agent place and receive phone calls. This repo uses three of its tools: `make_call`, `check_call_status`, and `get_transcript`.
+[KaiCalls](https://www.kaicalls.com/ai-agent-phone-number?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me) gives your AI agent a phone. Its hosted MCP server is the calling engine here: this repo uses `make_call`, `check_call_status` and `get_transcript`.
 
-A new account's first call to a US or Canada business line is free. After that, calls run on a plan: see [pricing](https://www.kaicalls.com/pricing?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me).
+Same key, more tricks: when a shop calls your number back, Kai answers and takes the message.
+
+A new account's first call to a US or Canada business line is free. After that, calls run on a [plan](https://www.kaicalls.com/pricing?utm_source=github&utm_medium=oss&utm_content=open-ask-for-me).
 
 ## Tests
 
@@ -155,7 +191,7 @@ A new account's first call to a US or Canada business line is free. After that, 
 node --test
 ```
 
-The tests run against a fake MCP server on localhost. They never reach the network or a phone.
+The tests run against a fake MCP server on localhost. They never touch the network or a phone.
 
 ## License
 
